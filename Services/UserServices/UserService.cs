@@ -26,15 +26,15 @@ public class UserService : IUserService
 	public async Task <string>  SignUp(UserDto requestBody)
 	{
 
-		var email = await _dbContext.UserModel.AnyAsync(u => u.Email == requestBody.Email) ? true : throw new InvalidOperationException("Email already exists");
+		var email = await _dbContext.Users.AnyAsync(u => u.Email == requestBody.Email);
 	 
-
+			if(email){
+		throw new InvalidOperationException("Email already exists");
+			}
 		if (requestBody.ConfPass != requestBody.Password)
 		{
 			throw new InvalidOperationException("Passwords do not match");
-
 		}
-
 
 		var user = new UserModel
 		{
@@ -45,17 +45,9 @@ public class UserService : IUserService
 		};
 		user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
 
-		await _dbContext.UserModel.AddAsync(user);
+		await _dbContext.Users.AddAsync(user);
 		await _dbContext.SaveChangesAsync();
-		var token = JWTHelper
-						.GenerateSecurityToken(
-						user.UserName,
-						user.Id,
-						user.Role,
-						_options);
-
-
-		return token.ToString();
+		return JwtConvertor(user);
 
 	}
 
@@ -63,24 +55,24 @@ public class UserService : IUserService
 
 	public async Task <string> SignIn(UserLogInDto user )
 	{
-		var isUserExist = await _dbContext.UserModel.FirstOrDefaultAsync(x=> x.Email == user.Email ) ?? throw new InvalidOperationException("User dose not exist");
+		var isUserExist = await _dbContext.Users.FirstOrDefaultAsync(x=> x.Email == user.Email ) ?? throw new InvalidOperationException("User dose not exist");
 
 		bool isPassword = BCrypt.Net.BCrypt.Verify(user.Password, isUserExist.Password) ? true :  throw new InvalidOperationException("Passwords dose not match");
 		
-		 
-
-		var token = JWTHelper
-						.GenerateSecurityToken(
-						isUserExist.UserName,
-						isUserExist.Id,
-						isUserExist.Role,
-						_options);
-
-
-		return token.ToString();
+	   	return JwtConvertor(isUserExist);
 
 	}
 
+
+	private string JwtConvertor (UserModel user)
+	{ 
+
+	return JWTHelper.GenerateSecurityToken(
+						user.UserName,
+						user.Id,
+						user.Role,
+						_options).ToString();
+	}
 
 }
 

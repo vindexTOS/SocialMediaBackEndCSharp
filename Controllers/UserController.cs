@@ -15,6 +15,7 @@ namespace User.Controllers;
 
 public class UserController : ControllerBase
 
+
 {
 	private readonly IUserService _UserService;
 

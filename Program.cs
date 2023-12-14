@@ -1,5 +1,6 @@
 using Data.Context;
 using Microsoft.EntityFrameworkCore;
+using Services.PostService;
 using Services.UserServices;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,7 +11,10 @@ builder.Services.AddDbContext<DataDbContext>(options =>
 
 // Register services
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IPostService, PostService>();
+//  authnetication
 
+builder.Services.AddAuthorization();
 // Add controllers, API explorer, and Swagger generation
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
