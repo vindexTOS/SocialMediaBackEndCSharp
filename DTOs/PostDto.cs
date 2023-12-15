@@ -9,4 +9,16 @@ public class PostDto{
     public string? Text { get; set; }
     [MaxLength(2000)]
     public string? Photo { get; set; }
+
+  
 }
+
+public class UpdatePostDto : PostDto{
+   
+
+    public int  PostId  { get; set; }
+
+ 
+}
+
+ 

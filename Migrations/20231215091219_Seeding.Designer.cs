@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace _.Migrations
 {
     [DbContext(typeof(DataDbContext))]
-    [Migration("20231214112734_Seeding")]
+    [Migration("20231215091219_Seeding")]
     partial class Seeding
     {
         /// <inheritdoc />
@@ -94,6 +94,9 @@ namespace _.Migrations
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
+
+                    b.Property<bool>("isDeleted")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 

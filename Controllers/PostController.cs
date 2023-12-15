@@ -1,10 +1,12 @@
 using DTOs.Post;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services.PostService;
 using Services.UserServices;
 
 
 namespace Post.Controller;
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 
@@ -13,7 +15,7 @@ namespace Post.Controller;
 
 public class PostController : ControllerBase
 {
-    private readonly  IPostService _PostService;
+    private readonly IPostService _PostService;
 
 
 
@@ -22,6 +24,8 @@ public class PostController : ControllerBase
     {
         _PostService = PostService;
     }
+
+
     [HttpPost("make")]
     public async Task<IActionResult> CreatePost([FromBody] PostDto requestBody)
     {
@@ -37,5 +41,61 @@ public class PostController : ControllerBase
         }
     }
 
+    [HttpPut("update")]
+
+    public async Task<IActionResult> PutPost([FromBody] UpdatePostDto requestBody)
+    {
+        try
+        {
+            return Ok(new { message = await _PostService.PutPost(requestBody) });
+        }
+        catch (InvalidOperationException ex)
+        {
+            return NotFound(new { message = ex.Message });
+        }
+        catch (InvalidDataException ex)
+        {
+            return StatusCode(500, new { message = ex.Message });
+
+        }
+    }
+    [HttpDelete("delete")]
+
+    public async Task<IActionResult> DeletePost([FromQuery] int postId, [FromQuery] int userId)
+    {
+
+        try
+        {
+            return Ok(new { message = await _PostService.DeletePost(postId, userId) });
+
+        }
+        catch (InvalidOperationException ex)
+        {
+
+            return NotFound(new { message = ex.Message });
+
+        }
+        catch (InvalidDataException ex)
+        {
+            return StatusCode(500, new { message = ex.Message });
+
+        }
+    }
+    [AllowAnonymous]
+    [HttpGet("get-all")]
+    public async Task<IActionResult> GetAll([FromQuery] string? search,[FromQuery] int? userId)
+    {
+
+        try
+        {
+            return Ok(new { data = await _PostService.GetAllPosts(search, userId) });
+        }
+        catch (InvalidDataException ex)
+        {
+
+            return StatusCode(500, new { message = ex.Message });
+
+        }
+    }
 
 }
