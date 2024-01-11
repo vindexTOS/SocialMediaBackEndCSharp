@@ -3,6 +3,8 @@ using Data.Context;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Services.CommentService;
+using Services.GeneralServise;
 using Services.PostService;
 using Services.UserServices;
 
@@ -15,8 +17,10 @@ builder.Services.AddDbContext<DataDbContext>(options =>
 // Register services
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IPostService, PostService>();
+builder.Services.AddScoped<ICommentService, CommentService>();
+builder.Services.AddScoped<IGeneralServices, GeneralServices>();
 //  authnetication
-
+ 
 // Configure JWT authentication
 builder.Services.AddAuthentication(options =>
 {

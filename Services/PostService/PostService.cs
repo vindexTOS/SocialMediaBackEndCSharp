@@ -1,11 +1,16 @@
-using AutoMapper;
+
+
+using System.Security.Authentication;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using Data.Context;
 using DTOs.Post;
-using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.ObjectPool;
-using Microsoft.OpenApi.Any;
 using Model.Posts;
+using Newtonsoft.Json;
+using Services.GeneralServise;
 
 namespace Services.PostService;
 
@@ -15,16 +20,17 @@ namespace Services.PostService;
 public class PostService : IPostService
 {
     private readonly DataDbContext _dbContext;
+    private readonly IGeneralServices _generalService;
 
-
-    public PostService(DataDbContext dbContext)
+    public PostService(DataDbContext dbContext, IGeneralServices generalServices)
     {
         _dbContext = dbContext;
+        _generalService = generalServices;
 
     }
     public async Task<string> CreatePost(PostDto requestBody)
     {
-        var newPost = ConvertDtoToModel<PostDto, PostModel>(requestBody);
+        var newPost = _generalService.ConvertDtoToModel<PostDto, PostModel>(requestBody);
 
         await _dbContext.AddAsync(newPost);
         await _dbContext.SaveChangesAsync();
@@ -33,7 +39,7 @@ public class PostService : IPostService
 
     public async Task<string> PutPost(UpdatePostDto requestBody)
     {
-        var PutPost = ConvertDtoToModel<UpdatePostDto, UpdateModel>(requestBody);
+        var PutPost = _generalService.ConvertDtoToModel<UpdatePostDto, UpdateModel>(requestBody);
 
         if (!await CheckUser(PutPost.PostID, PutPost.UserId)) throw new InvalidOperationException("User not found");
         var existingPost = await _dbContext.Posts.FindAsync(PutPost.PostID);
@@ -61,43 +67,87 @@ public class PostService : IPostService
     }
 
 
-    public async Task<List<PostModel>> GetAllPosts(string? search, int? userId)
-{
-    IQueryable<PostModel> query = _dbContext.Posts;
-
-    if (!string.IsNullOrEmpty(search))
+    public async Task<List<PostModel>> GetAllPosts(string? search, int? userId, int page = 1, int pageSize = 10)
     {
-        query = query.Where(post => post.Text.Contains(search));
+        IQueryable<PostModel> query = _dbContext.Posts;
+
+        if (!string.IsNullOrEmpty(search))
+        {
+            query = query.Where(post => post.Text.Contains(search));
+        }
+
+        if (userId.HasValue && userId != 0)
+        {
+            query = query.Where(post => post.UserId == userId);
+        }
+        int skip = (page - 1) * pageSize;
+
+        List<PostModel> posts = await query
+           .Skip(skip)
+           .Take(pageSize)
+           .ToListAsync();
+
+        return posts;
     }
 
-    if (userId.HasValue && userId != 0)
+
+    public async Task<object> GetSingle(int id)
+    { 
+        var singlePost = await _dbContext.Posts
+        .Include(p => p.Comments) 
+            .ThenInclude(c => c.User)
+        .FirstOrDefaultAsync(p => p.Id == id)
+        ?? throw new InvalidOperationException("Post not found");
+
+    var options = new JsonSerializerOptions
     {
-        query = query.Where(post => post.UserId == userId);
+        ReferenceHandler = ReferenceHandler.Preserve,
+        MaxDepth = 32,
+        // Other options as needed
+    };
+
+        var postData = new
+        {
+            Post = new
+            {
+                singlePost.Text,
+                singlePost.Photo,
+                singlePost.isDeleted,
+                singlePost.User.UserName,
+                singlePost.User.Avatar,
+                singlePost.UserId,
+                singlePost.Id,
+            
+ 
+            Comments = singlePost.Comments.Select(comment => new
+            {
+                comment.Id,
+                comment.Text,
+                User = new
+                {
+                    comment.User.Id,
+                    comment.User.UserName
+                }
+            })
+        }
+    };
+
+    var jsonString = System.Text.Json.JsonSerializer.Serialize(postData, options);
+    var jsonObject = JsonDocument.Parse(jsonString).RootElement.Clone();
+    return jsonObject;
     }
-
-    List<PostModel> posts = await query.ToListAsync();
-    return posts;
-}
-
-
     private async Task<bool> CheckUser(int postId, int userId)
     {
 
         var user = await _dbContext.Users.FindAsync(userId);
         var post = await _dbContext.Posts.FindAsync(postId);
-        Console.WriteLine(postId);
+
         return user != null && post != null && user.Id == post.UserId;
     }
 
 
 
-    private static TDestination ConvertDtoToModel<TSource, TDestination>(TSource dto) where TSource : class
-    {
-        var config = new MapperConfiguration(cfg => cfg.CreateMap<TSource, TDestination>());
-        var mapper = new Mapper(config);
 
-        return mapper.Map<TSource, TDestination>(dto);
-    }
 
 
 }

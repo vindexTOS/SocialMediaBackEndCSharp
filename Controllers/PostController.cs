@@ -83,12 +83,28 @@ public class PostController : ControllerBase
     }
     [AllowAnonymous]
     [HttpGet("get-all")]
-    public async Task<IActionResult> GetAll([FromQuery] string? search,[FromQuery] int? userId)
+    public async Task<IActionResult> GetAll([FromQuery] string? search, [FromQuery] int? userId,[FromQuery] int page = 1 ,  [FromQuery] int pageSize = 10)
     {
 
         try
         {
-            return Ok(new { data = await _PostService.GetAllPosts(search, userId) });
+            return Ok(new { data = await _PostService.GetAllPosts(search, userId,   page ,  pageSize) });
+        }
+        catch (InvalidDataException ex)
+        {
+
+            return StatusCode(500, new { message = ex.Message });
+
+        }
+    }
+
+    [AllowAnonymous]
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetSingle(int id)
+    {
+        try
+        {
+            return Ok(new { data =  await _PostService.GetSingle(id)   });
         }
         catch (InvalidDataException ex)
         {

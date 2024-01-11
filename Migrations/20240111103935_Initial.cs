@@ -35,7 +35,8 @@ namespace _.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<int>(type: "int", nullable: false),
                     Text = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: false),
-                    Photo = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: true)
+                    Photo = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: true),
+                    isDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -45,7 +46,7 @@ namespace _.Migrations
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -82,23 +83,23 @@ namespace _.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     PostId = table.Column<int>(type: "int", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false)
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    PostModelId = table.Column<int>(type: "int", nullable: true),
+                    UserModelId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Likes", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Likes_Posts_PostId",
-                        column: x => x.PostId,
+                        name: "FK_Likes_Posts_PostModelId",
+                        column: x => x.PostModelId,
                         principalTable: "Posts",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Likes_Users_UserId",
-                        column: x => x.UserId,
+                        name: "FK_Likes_Users_UserModelId",
+                        column: x => x.UserModelId,
                         principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
@@ -112,14 +113,14 @@ namespace _.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Likes_PostId",
+                name: "IX_Likes_PostModelId",
                 table: "Likes",
-                column: "PostId");
+                column: "PostModelId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Likes_UserId",
+                name: "IX_Likes_UserModelId",
                 table: "Likes",
-                column: "UserId");
+                column: "UserModelId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Posts_UserId",

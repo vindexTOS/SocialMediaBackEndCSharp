@@ -77,3 +77,4 @@ F:\gios projects\SocialMediaCSharp\obj\Debug\net7.0\ref\..dll
 F:\gios projects\SocialMediaCSharp\bin\Debug\net7.0\BCrypt.Net.dll
 F:\gios projects\SocialMediaCSharp\bin\Debug\net7.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 F:\gios projects\SocialMediaCSharp\bin\Debug\net7.0\AutoMapper.dll
+F:\gios projects\SocialMediaCSharp\bin\Debug\net7.0\Newtonsoft.Json.dll
