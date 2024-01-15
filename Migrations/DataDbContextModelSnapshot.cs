@@ -61,9 +61,6 @@ namespace _.Migrations
                     b.Property<int>("PostId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("PostModelId")
-                        .HasColumnType("int");
-
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
@@ -72,11 +69,9 @@ namespace _.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PostModelId");
-
                     b.HasIndex("UserModelId");
 
-                    b.ToTable("Likes");
+                    b.ToTable("Likes", (string)null);
                 });
 
             modelBuilder.Entity("Model.Posts.PostModel", b =>
@@ -86,6 +81,9 @@ namespace _.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Likes")
+                        .HasColumnType("int");
 
                     b.Property<string>("Photo")
                         .HasMaxLength(2000)
@@ -165,10 +163,6 @@ namespace _.Migrations
 
             modelBuilder.Entity("Model.Likes.LikesModel", b =>
                 {
-                    b.HasOne("Model.Posts.PostModel", null)
-                        .WithMany("Likes")
-                        .HasForeignKey("PostModelId");
-
                     b.HasOne("Models.User.UserModel", null)
                         .WithMany("Likes")
                         .HasForeignKey("UserModelId");
@@ -188,8 +182,6 @@ namespace _.Migrations
             modelBuilder.Entity("Model.Posts.PostModel", b =>
                 {
                     b.Navigation("Comments");
-
-                    b.Navigation("Likes");
                 });
 
             modelBuilder.Entity("Models.User.UserModel", b =>

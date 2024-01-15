@@ -16,7 +16,7 @@ namespace Models.User;
 		public string? Email { get; set; }
 		[Required]
 		[MaxLength(50)]
-		public string? UserName { get; set; }
+		public required string  UserName { get; set; }
 		[MaxLength(1000)]
 		public string? Password { get; set;}
 		[MaxLength(1500)]

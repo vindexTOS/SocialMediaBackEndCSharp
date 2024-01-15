@@ -36,5 +36,34 @@ public class CommentsController : ControllerBase
         }
     }
 
+    [HttpDelete]
 
+    public async Task<IActionResult> DeleteComment(int id)
+    {
+        try
+        {
+            return Ok(new { message = await _commentService.DeleteComment(id) });
+        }
+        catch (InvalidOperationException ex)
+        {
+
+            return NotFound(new { message = ex.Message });
+        }
+    }
+
+    [HttpPut]
+    public async Task<IActionResult> PutComment([FromBody] CommentDto requestBody)
+    {
+
+        try
+        {
+            return Ok(new { message = await _commentService.EditComment(requestBody) });
+        }
+        catch (InvalidOperationException ex)
+        {
+
+            return NotFound(new { message = ex.Message });
+
+        }
+    }
 }

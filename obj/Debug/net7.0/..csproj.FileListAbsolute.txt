@@ -5,9 +5,12 @@ F:\gios projects\SocialMediaCSharp\bin\Debug\net7.0\..deps.json
 F:\gios projects\SocialMediaCSharp\bin\Debug\net7.0\..runtimeconfig.json
 F:\gios projects\SocialMediaCSharp\bin\Debug\net7.0\..dll
 F:\gios projects\SocialMediaCSharp\bin\Debug\net7.0\..pdb
+F:\gios projects\SocialMediaCSharp\bin\Debug\net7.0\AutoMapper.dll
 F:\gios projects\SocialMediaCSharp\bin\Debug\net7.0\Azure.Core.dll
 F:\gios projects\SocialMediaCSharp\bin\Debug\net7.0\Azure.Identity.dll
+F:\gios projects\SocialMediaCSharp\bin\Debug\net7.0\BCrypt.Net.dll
 F:\gios projects\SocialMediaCSharp\bin\Debug\net7.0\Humanizer.dll
+F:\gios projects\SocialMediaCSharp\bin\Debug\net7.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 F:\gios projects\SocialMediaCSharp\bin\Debug\net7.0\Microsoft.AspNetCore.OpenApi.dll
 F:\gios projects\SocialMediaCSharp\bin\Debug\net7.0\Microsoft.Bcl.AsyncInterfaces.dll
 F:\gios projects\SocialMediaCSharp\bin\Debug\net7.0\Microsoft.Data.SqlClient.dll
@@ -29,6 +32,7 @@ F:\gios projects\SocialMediaCSharp\bin\Debug\net7.0\Microsoft.OpenApi.dll
 F:\gios projects\SocialMediaCSharp\bin\Debug\net7.0\Microsoft.SqlServer.Server.dll
 F:\gios projects\SocialMediaCSharp\bin\Debug\net7.0\Microsoft.Win32.SystemEvents.dll
 F:\gios projects\SocialMediaCSharp\bin\Debug\net7.0\Mono.TextTemplating.dll
+F:\gios projects\SocialMediaCSharp\bin\Debug\net7.0\Newtonsoft.Json.dll
 F:\gios projects\SocialMediaCSharp\bin\Debug\net7.0\Swashbuckle.AspNetCore.Swagger.dll
 F:\gios projects\SocialMediaCSharp\bin\Debug\net7.0\Swashbuckle.AspNetCore.SwaggerGen.dll
 F:\gios projects\SocialMediaCSharp\bin\Debug\net7.0\Swashbuckle.AspNetCore.SwaggerUI.dll
@@ -74,7 +78,3 @@ F:\gios projects\SocialMediaCSharp\obj\Debug\net7.0\refint\..dll
 F:\gios projects\SocialMediaCSharp\obj\Debug\net7.0\..pdb
 F:\gios projects\SocialMediaCSharp\obj\Debug\net7.0\..genruntimeconfig.cache
 F:\gios projects\SocialMediaCSharp\obj\Debug\net7.0\ref\..dll
-F:\gios projects\SocialMediaCSharp\bin\Debug\net7.0\BCrypt.Net.dll
-F:\gios projects\SocialMediaCSharp\bin\Debug\net7.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
-F:\gios projects\SocialMediaCSharp\bin\Debug\net7.0\AutoMapper.dll
-F:\gios projects\SocialMediaCSharp\bin\Debug\net7.0\Newtonsoft.Json.dll

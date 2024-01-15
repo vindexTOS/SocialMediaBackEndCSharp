@@ -18,6 +18,9 @@ dotnet ef database update
 
 #dotnet dotnet clean dotnet build
 
-                    <!-- Email = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false), -->
+#droping db
+dotnet ef database drop
+dotnet ef database update
+<!-- Email = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false), -->
 
 # dotnet add package Newtonsoft.Json --version 6.1.26

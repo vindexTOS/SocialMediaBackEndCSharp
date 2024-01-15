@@ -1,10 +1,12 @@
 using System.Text;
 using Data.Context;
+using Like.Service.interfa;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Services.CommentService;
 using Services.GeneralServise;
+using Services.LikesService;
 using Services.PostService;
 using Services.UserServices;
 
@@ -19,6 +21,7 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IPostService, PostService>();
 builder.Services.AddScoped<ICommentService, CommentService>();
 builder.Services.AddScoped<IGeneralServices, GeneralServices>();
+builder.Services.AddScoped<ILikesService, LikesService>();
 //  authnetication
  
 // Configure JWT authentication

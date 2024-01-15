@@ -54,12 +54,9 @@ namespace Data.Context
             //     .HasForeignKey(l => l.PostId)
             //     .OnDelete(DeleteBehavior.Cascade);
 
-            // modelBuilder.Entity<LikesModel>()
-            //     .HasOne(l => l.User)
-            //     .WithMany(u => u.Likes)
-            //     .HasForeignKey(l => l.UserId)
-            //     .OnDelete(DeleteBehavior.Cascade);
-
+    modelBuilder.Entity<LikesModel>()
+        .ToTable("Likes")
+    .HasKey(l => l.Id);
             modelBuilder.Entity<CommentModel>()
             .HasOne(c => c.Post)
             .WithMany(p => p.Comments)

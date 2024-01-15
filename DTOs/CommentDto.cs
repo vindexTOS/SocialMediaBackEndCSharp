@@ -8,7 +8,7 @@ namespace DTOs.Comemtns;
 
 public class CommentDto
 {
-    internal int Id;
+ public int Id { get; set; } 
     internal UserDto User;
 
     [Required]
@@ -20,5 +20,15 @@ public class CommentDto
 
  
 
+
+}
+
+
+public class UpdateCommentDto {
+
+    internal int id;
+    public string? Text { get; set; }
+    public int UserId { get; set; }
+    public int PostId { get; set; }
 
 }

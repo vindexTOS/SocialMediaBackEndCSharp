@@ -25,7 +25,7 @@ public class PostModel
  
     public virtual ICollection<CommentModel>? Comments { get; set; }
 
-	public ICollection<LikesModel>? Likes { get; set; }
+	public int Likes { get; set; }
  
 }
 

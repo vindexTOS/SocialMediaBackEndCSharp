@@ -92,13 +92,14 @@ public class PostService : IPostService
 
 
     public async Task<object> GetSingle(int id)
-    { 
-        var singlePost = await _dbContext.Posts
-        .Include(p => p.Comments) 
-            .ThenInclude(c => c.User)
-        .FirstOrDefaultAsync(p => p.Id == id)
+    {
+        var singlePost = await _dbContext.Posts.Include(u => u.User)
+        .Include((p) =>   p.Comments )
+        .FirstOrDefaultAsync(p => p.Id == id) 
         ?? throw new InvalidOperationException("Post not found");
-
+    var likes = await _dbContext.Likes
+    .Where(l => l.PostId == id)
+  .CountAsync();
     var options = new JsonSerializerOptions
     {
         ReferenceHandler = ReferenceHandler.Preserve,
@@ -128,7 +129,8 @@ public class PostService : IPostService
                     comment.User.Id,
                     comment.User.UserName
                 }
-            })
+            }),
+            Likes = likes 
         }
     };
 
